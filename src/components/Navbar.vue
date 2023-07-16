@@ -5,7 +5,7 @@
         </div>
         <ul class="d-flex w-fit justify-start my-auto">
             <li
-                v-for="item in itens"
+                v-for="item in items"
                 :key="item.id"
                 @click="$router.push(item.path)"
                 class=" hover:bg-slate-300 dark:hover:bg-slate-800 cursor-pointer px-4 py-2 rounded-md">
@@ -26,7 +26,7 @@
 export default {
   name: 'NavBar',
   data: () => ({
-    itens: [{
+    items: [{
         id: crypto.randomUUID(),
         text: "Home",
         icon: "mdi-home",
