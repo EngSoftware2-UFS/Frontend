@@ -11,6 +11,8 @@
     "@mdi/font": "5.9.55",
     "@vueuse/core": "^10.2.1",
     "autoprefixer": "^10",
+    "axios": "^1.4.0",
+    "moment": "^2.29.4",
     "postcss": "^8",
     "roboto-fontface": "*",
     "tailwindcss": "^3",
