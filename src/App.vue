@@ -11,6 +11,7 @@
 <script>
 import Navbar from './components/Navbar.vue';
 import Loading from './components/Loading.vue';
+import * as loginService from './services/authService';
 
 export default {
   name: 'App',
@@ -52,13 +53,23 @@ export default {
           this.loading = false;
         }
 
-        var errors = error.response?.data?.errors;
-        if (errors) {
-          var errorMessage = errors.join("\n");
-          this.$toast.error(errorMessage);
+        if (error.response?.status == 401)
+        {
+          if (localStorage.token) {
+            loginService.logout();
+            this.logout();
+            this.$toast.info("Sessão inválida, usuário deslogado.");
+          }
         }
         else {
-          this.$toast.error("Um erro ocorreu.");
+          var errors = error.response?.data?.errors;
+          if (errors) {
+            var errorMessage = errors.join("\n");
+            this.$toast.error(errorMessage);
+          }
+          else {
+            this.$toast.error("Um erro ocorreu.");
+          }
         }
         throw error;
       })
