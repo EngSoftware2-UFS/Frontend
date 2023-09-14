@@ -16,6 +16,13 @@
             </li>
         </ul>
         <v-spacer />
+        <div class="my-auto dar:text-white mx-2" v-if="$route.path != '/login'">
+            <v-btn variant="outlined" @click="$router.push('/login')" v-if="!isUserLogged">Login</v-btn>
+            <div v-else class="d-flex my-auto mx-2">
+                <span class="mx-4 text-xl font-semibold">Olá {{ userData.name }}</span>
+                <v-btn variant="outlined" @click="logout()">Sair</v-btn>
+            </div>
+        </div>
         <div class="my-auto">
             <v-icon icon="mdi-circle-half-full" @click="toggleDark()"></v-icon>
         </div>
@@ -23,6 +30,8 @@
 </template>
 
 <script>
+import * as loginService from '../services/authService.js';
+
 export default {
   name: 'NavBar',
   data: () => ({
@@ -38,10 +47,22 @@ export default {
         path: "/acervo"
     }]
   }),
+  props: {
+    userLogged: Boolean,
+    userData: Object
+  },
   methods: {
-    // toggleDark: function () {
-    //     this.$emit('toggle');
-    // }
+    logout() {
+        loginService.logout()
+        this.$emit("logout")
+    }
+  },
+  computed: {
+    isUserLogged: function () {
+        return this.userLogged
+    }
+  },
+  mounted() {
   }
 }
 </script>
