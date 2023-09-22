@@ -18,7 +18,8 @@ const routes = [
   {
     path: '/consultaUsuario',
     name: 'consultaUsuario',
-    component: ConsultaUsuario
+    component: ConsultaUsuario,
+    meta: { requiresAuth: true },
   }
 ]
 

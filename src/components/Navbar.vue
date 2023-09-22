@@ -58,7 +58,7 @@ export default {
       },
       {
         id: crypto.randomUUID(),
-        text: "Consulta",
+        text: "Consulta Usuario",
         icon: "mdi-account-multiple-plus",
         path: "/consultaUsuario",
       },
