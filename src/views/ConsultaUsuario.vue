@@ -279,10 +279,7 @@
   <script setup>
   import { ref, computed, onBeforeMount } from "vue";
   import * as atendenteService from "../services/atendenteService";
-  import { useToast } from "vue-toastification";
-  
-  const toast = useToast();
-  
+    
   let estadoDialog = ref(false);
   let estadoDialogCadastro = ref(false);
   const tipoUsuario = ref("Clientes");
@@ -331,7 +328,6 @@
   });
   const teste = () => {
     console.log('teste')
-    toast("something");
   };
   const cadastrarUsuario = () => {
     atendenteService
