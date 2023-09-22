@@ -28,7 +28,7 @@
             variant="tonal"
             size="large"
             dense
-            @click="abrirCadastrarDialog"
+            @click="estadoDialogCadastro = !estadoDialogCadastro"
             >Cadastrar</v-btn
           >
         </v-col>
@@ -70,15 +70,19 @@
       </v-col>
     </v-row>
   </div>
+
   <EditDialog
     v-model="estadoDialog"
     @closeAction="estadoDialog = !estadoDialog"
     :usuarioDisplay="usuarioDisplay"
   />
-
+  <CadastroDialog
+    v-model="estadoDialogCadastro"
+    @closeAction="estadoDialogCadastro = !estadoDialogCadastro"
+  />
   <!-- pendendo componentizar -->
 
-  <v-dialog v-model="estadoDialogCadastro" width="1000" persistent>
+  <!-- <v-dialog v-model="estadoDialogCadastro" width="1000" persistent>
     <v-card>
       <v-card-text>
         <v-row>
@@ -170,16 +174,18 @@
         >
       </v-card-actions>
     </v-card>
-  </v-dialog>
+  </v-dialog> -->
 </template>
 
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import * as atendenteService from "../services/atendenteService";
 import EditDialog from "../components/EditDialog.vue";
+import CadastroDialog from "../components/CadastroDialog.vue";
 
 let estadoDialog = ref(false);
 let estadoDialogCadastro = ref(false);
+
 const tipoUsuario = ref("Clientes");
 
 const clientes = ref([]);
@@ -193,59 +199,9 @@ const headers = [
   { value: "Ações" },
 ];
 
-const abrirCadastrarDialog = () => {
-  estadoDialogCadastro.value = !estadoDialogCadastro.value;
-};
-
 const abrirUsuarioDialog = (dados) => {
   usuarioDisplay.value = dados;
   estadoDialog.value = !estadoDialog.value;
-};
-
-const editarUsuario = () => {
-  // Pendente endpoint para alteração.
-  console.log(usuarioDisplay.value);
-};
-
-const novoCliente = ref({
-  nome: "",
-  cpf: "",
-  email: "",
-  senha: "",
-  endereco: {
-    logradouro: "",
-    numero: "",
-    bairro: "",
-    cidade: "",
-    complemento: "",
-  },
-});
-const teste = () => {
-  console.log("teste");
-};
-const cadastrarUsuario = () => {
-  atendenteService
-    .postCliente(novoCliente.value)
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  novoCliente.value = {
-    nome: "",
-    cpf: "",
-    email: "",
-    senha: "",
-    endereco: {
-      logradouro: "",
-      numero: "",
-      bairro: "",
-      cidade: "",
-      complemento: "",
-    },
-  };
-  abrirCadastrarDialog();
 };
 
 onBeforeMount(() => {
