@@ -6,14 +6,16 @@ import ConsultaUsuario from '../views/ConsultaUsuario.vue'
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: "/",
+    name: "home",
+    component: HomeView,
+    meta: { requiresAuth: false },
   },
   {
     path: '/login',
     name: 'login',
-    component: LoginView
+    component: LoginView,
+    meta: { requiresAuth: false },
   },
   {
     path: '/consultaUsuario',
@@ -25,7 +27,13 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+router.beforeEach(async (to) => {
+  const authenticated =
+    localStorage.getItem("token") !== null || "" ? true : false;
+  if (to.meta.requiresAuth && authenticated === false) return "/home";
+});
+
+export default router;
