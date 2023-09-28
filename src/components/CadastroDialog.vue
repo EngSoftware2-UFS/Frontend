@@ -94,7 +94,7 @@
   </v-dialog>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, defineEmits} from "vue";
 import * as atendenteService from "../services/atendenteService";
 const emit = defineEmits(["closeAction"]);
 const novoCliente = ref({

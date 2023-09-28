@@ -6,29 +6,29 @@
           <h1 class="text-2xl font-semibold p-2">Informaçoes do Usuário</h1>
         </v-row>
         <v-row>
+          {{ usuarioEditado.usuarioDisplay }}
+        </v-row>
+        <v-row>
           <v-col>
             <v-text-field
               label="Nome completo"
               hide-details="auto"
-              v-model="usuarioDisplay.nome"
             ></v-text-field>
+            <!-- v-model="usuarioDisplay.nome" -->
           </v-col>
           <v-col>
             <v-text-field
               label="Endereço de email"
               placeholder="exemplo@email.com"
               type="email"
-              v-model="usuarioDisplay.email"
             ></v-text-field>
+            <!-- v-model="usuarioDisplay.email" -->
           </v-col>
         </v-row>
         <v-row>
           <v-col>
-            <v-text-field
-              label="CPF"
-              hide-details="auto"
-              v-model="usuarioDisplay.cpf"
-            ></v-text-field>
+            <v-text-field label="CPF" hide-details="auto"></v-text-field>
+            <!-- v-model="usuarioDisplay.cpf" -->
           </v-col>
           <v-col>
             <v-text-field
@@ -36,8 +36,8 @@
               hide-details="auto"
               variant="plain"
               readonly
-              v-model="usuarioDisplay.dataCadastro"
             ></v-text-field>
+            <!-- v-model="usuarioDisplay.dataCadastro" -->
           </v-col>
         </v-row>
         <v-row>
@@ -47,8 +47,8 @@
               hide-details="auto"
               variant="plain"
               readonly
-              v-model="bloqueio"
             ></v-text-field>
+            <!-- v-model="bloqueio" -->
           </v-col>
         </v-row>
         <v-row>
@@ -59,29 +59,20 @@
             ><v-text-field
               label="Logradouro"
               hide-details="auto"
-              v-model="usuarioDisplay.endereco.logradouro"
             ></v-text-field>
+            <!-- v-model="usuarioDisplay.endereco.logradouro" -->
           </v-col>
           <v-col cols="3"
-            ><v-text-field
-              label="Bairro"
-              hide-details="auto"
-              v-model="usuarioDisplay.endereco.bairro"
-            ></v-text-field>
+            ><v-text-field label="Bairro" hide-details="auto"></v-text-field>
+            <!-- v-model="usuarioDisplay.endereco.bairro" -->
           </v-col>
           <v-col cols="2"
-            ><v-text-field
-              label="Numero"
-              hide-details="auto"
-              v-model="usuarioDisplay.endereco.numero"
-            ></v-text-field>
+            ><v-text-field label="Numero" hide-details="auto"></v-text-field>
+            <!-- v-model="usuarioDisplay.endereco.numero" -->
           </v-col>
           <v-col cols="3"
-            ><v-text-field
-              label="Cidade"
-              hide-details="auto"
-              v-model="usuarioDisplay.endereco.cidade"
-            ></v-text-field>
+            ><v-text-field label="Cidade" hide-details="auto"></v-text-field>
+            <!-- v-model="usuarioDisplay.endereco.cidade" -->
           </v-col>
         </v-row>
         <v-row>
@@ -89,8 +80,8 @@
             ><v-text-field
               label="Complemento"
               hide-details="auto"
-              v-model="usuarioDisplay.endereco.complemento"
             ></v-text-field>
+            <!-- v-model="usuarioDisplay.endereco.complemento" -->
           </v-col>
         </v-row>
       </v-card-text>
@@ -99,14 +90,17 @@
           >Cancelar</v-btn
         >
 
-        <v-btn color="green" variant="outlined" @click="editarUsuario">Editar</v-btn>
+        <v-btn color="green" variant="outlined" @click="editarUsuario"
+          >Editar</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script setup>
-import { computed } from "vue";
+/* eslint-disable */
+import { ref, computed, defineProps } from "vue";
 
 const props = defineProps({
   usuarioDisplay: {
@@ -128,10 +122,13 @@ const props = defineProps({
   },
 });
 
+console.log(props);
+const usuarioEditado = ref(props);
 const editarUsuario = () => {
-  console.log("Não implementado")
-}
+  console.log("Não implementado");
+};
 const bloqueio = computed(() => {
   return props.usuarioDisplay.bloqueio === false ? "Bloqueado" : "Sem bloqueio";
 });
+console.log(bloqueio);
 </script>
