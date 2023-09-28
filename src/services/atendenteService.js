@@ -2,13 +2,18 @@ import * as baseApi from "./api.js";
 
 let api = baseApi.getApi();
 
-// const setHeader = () => {
-//   if (localStorage.token) baseApi.setAuthToken(localStorage.token);
-// };
+const getCliente = async (id) => {
+  return api
+    .get(`/clientes/${id}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return err;
+    });
+};
 
-const getClientes = async () => {
-  //   setHeader();
-
+const getClientes = () => {
   return api
     .get("/clientes")
     .then((res) => {
@@ -30,4 +35,4 @@ const postCliente = (data) => {
     });
 };
 
-export { getClientes, postCliente};
+export { getCliente, getClientes, postCliente };
