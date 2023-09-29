@@ -17,6 +17,8 @@
 import Navbar from "./components/Navbar.vue";
 import Loading from "./components/Loading.vue";
 import * as loginService from "./services/authService";
+import { useDark } from "@vueuse/core";
+import { useTheme } from 'vuetify'
 
 export default {
   name: "App",
@@ -60,20 +62,31 @@ export default {
             this.requests.pop();
             this.loading = false;
           }
-
-          if (error.response?.status == 401 && this.$route.path != "/login") {
-            if (localStorage.token) {
-              loginService.logout();
-              this.logout();
-              this.$toast.info("Sessão inválida, usuário deslogado.");
-            }
-          } else {
-            var errors = error.response?.data?.errors;
-            if (errors) {
-              var errorMessage = errors.join("\n");
-              this.$toast.error(errorMessage);
+          
+          if (error.response?.status == 403) {
+            this.$toast.error("Sem permissão.");
+          }else {
+            if (error.response?.status == 401 && this.$route.path != "/login") {
+              if (localStorage.token) {
+                loginService.logout();
+                this.logout();
+                this.$toast.info("Sessão inválida, usuário deslogado.");
+              }
             } else {
-              this.$toast.error("Um erro ocorreu.");
+              var errors = error.response?.data?.errors;
+              if (errors) {
+                var errorMessage = "";
+                if (errors.length && errors.length > 0)
+                  errorMessage = errors.join("\n");
+                else {
+                  for (var err in errors) {
+                    errorMessage += errors[err][0] + "\n";
+                  }
+                }
+                this.$toast.error(errorMessage);
+              } else {
+                this.$toast.error("Um erro ocorreu.");
+              }
             }
           }
           throw error;
@@ -95,6 +108,10 @@ export default {
   mounted() {
     this.mountInterceptors();
     this.logged();
+    
+    const theme = useTheme()
+    var isDark = useDark();
+    theme.global.name.value = !isDark.value ? 'light' : 'dark'
   },
 };
 </script>
