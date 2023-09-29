@@ -1,7 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
-import ConsultaUsuario from "../views/ConsultaUsuario.vue";
+import TelaClientes from "../views/TelaClientes.vue";
+import TelaAtendentes from "../views/TelaAtendentes.vue";
+import TelaBibliotecarios from "../views/TelaBibliotecarios.vue";
+import TelaObras from "../views/TelaObras.vue";
 
 const routes = [
   {
@@ -17,11 +20,29 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
-    path: "/consultaUsuario",
-    name: "consultaUsuario",
-    component: ConsultaUsuario,
+    path: "/clientes",
+    name: "TelaClientes",
+    component: TelaClientes,
     meta: { requiresAuth: true },
   },
+  {
+    path: "/atendentes",
+    name: "TelaAtendentes",
+    component: TelaAtendentes,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/bibliotecarios",
+    name: "TelaBibliotecarios",
+    component: TelaBibliotecarios,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/acervo",
+    name: "TelaObras",
+    component: TelaObras,
+    meta: { requiresAuth: true },
+  }
 ];
 
 const router = createRouter({
