@@ -9,12 +9,12 @@
       <li
         v-for="item in items"
         :key="item.id"
-        @click="$router.push(item.path)"
-        class="hover:bg-slate-300 dark:hover:bg-slate-800 cursor-pointer px-4 py-2 rounded-md"
+        
       >
-        <div class="d-flex">
+        <div v-if="showItem(item.roles)" @click="$router.push(item.path)"
+        class="d-flex hover:bg-slate-300 dark:hover:bg-slate-800 cursor-pointer px-4 py-2 rounded-md">
           <v-icon :icon="item.icon" class="my-auto"></v-icon>
-          <span class="my-auto">{{ item.text }}</span>
+          <span class="my-auto ml-2">{{ item.text }}</span>
         </div>
       </li>
     </ul>
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="my-auto">
-      <v-icon icon="mdi-circle-half-full" @click="toggleDark()"></v-icon>
+      <v-icon icon="mdi-circle-half-full" @click="toggleDark(); toggleTheme();"></v-icon>
     </div>
   </div>
 </template>
@@ -49,19 +49,36 @@ export default {
         text: "Home",
         icon: "mdi-home",
         path: "/",
+        roles: ["everyone"]
       },
       {
         id: crypto.randomUUID(),
         text: "Acervo",
         icon: "mdi-book",
         path: "/acervo",
+        roles: ["everyone"]
       },
       {
         id: crypto.randomUUID(),
-        text: "Consulta Usuario",
+        text: "Clientes",
         icon: "mdi-account-multiple-plus",
-        path: "/consultaUsuario",
+        path: "/clientes",
+        roles: ["atendente", "bibliotecario"]
       },
+      {
+        id: crypto.randomUUID(),
+        text: "Atendentes",
+        icon: "mdi-account-multiple-plus",
+        path: "/atendentes",
+        roles: ["bibliotecario"]
+      },
+      {
+        id: crypto.randomUUID(),
+        text: "Bibliotecarios",
+        icon: "mdi-account-multiple-plus",
+        path: "/bibliotecarios",
+        roles: ["bibliotecario"]
+      }
     ],
   }),
   props: {
@@ -72,13 +89,16 @@ export default {
     logout() {
       loginService.logout();
       this.$emit("logout");
-      this.$route.push("/");
+      this.$router.push("/");
     },
+    showItem: function (roles) {
+      return roles?.includes(this.userData?.tipoUsuario?.toLowerCase()) || roles?.includes("everyone");
+    }
   },
   computed: {
     isUserLogged: function () {
       return this.userLogged;
-    },
+    }
   },
   mounted() {},
 };
@@ -86,7 +106,13 @@ export default {
 
 <script setup>
 import { useDark, useToggle } from "@vueuse/core";
+import { useTheme } from 'vuetify'
+
+const theme = useTheme()
 
 const isDark = useDark();
-const toggleDark = useToggle(isDark);
+const toggleDark = useToggle(isDark)
+function toggleTheme () {
+  theme.global.name.value = !isDark.value ? 'light' : 'dark'
+}
 </script>
