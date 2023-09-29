@@ -2,37 +2,73 @@ import * as baseApi from "./api.js";
 
 let api = baseApi.getApi();
 
-const getCliente = async (id) => {
+const setHeader = () => {
+  if (localStorage.token) baseApi.setAuthToken(localStorage.token);
+}
+
+const getAtendente = async (id) => {
+  setHeader();
   return api
-    .get(`/clientes/${id}`)
+    .get(`/atendentes/${id}`)
     .then((res) => {
       return res.data;
     })
     .catch((err) => {
-      return err;
+      throw err;
     });
 };
 
-const getClientes = () => {
+const getAtendentes = (name = null, cpf = null) => {
+  setHeader();
+  var queries = [];
+  if (name != null) queries.push(`name=${name}`);
+  if (cpf != null) queries.push(`cpf=${cpf}`);
+  var query = `?${queries.join("&")}`;
+
   return api
-    .get("/clientes")
+    .get(`/atendentes${query}`)
     .then((res) => {
       return res.data;
     })
     .catch((err) => {
-      return err;
+      throw err;
     });
 };
 
-const postCliente = (data) => {
+const createAtendente = (data) => {
+  setHeader();
   return api
-    .post("/clientes", data)
+    .post("/atendentes", data)
     .then((res) => {
       return res;
     })
     .catch((err) => {
-      return err;
+      throw err;
     });
 };
 
-export { getCliente, getClientes, postCliente };
+const updateAtendente = (data) => {
+  setHeader();
+  return api
+    .patch(`/atendentes/${data.id}`, data)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+
+const deleteAtendente = (id) => {
+  setHeader();
+  return api
+    .delete(`/atendentes/${id}`)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      throw err;
+    });
+};
+
+export { getAtendente, getAtendentes, createAtendente, updateAtendente, deleteAtendente };
