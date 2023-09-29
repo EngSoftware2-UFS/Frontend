@@ -30,7 +30,7 @@
               @click:append-inner="refreshObras()"
               @keyup.enter="refreshObras()"
             ></v-text-field>
-            <v-tooltip text="Cadastrar Obra" location="top">
+            <v-tooltip v-if="userData?.tipoUsuario == 'BIBLIOTECARIO'" text="Cadastrar Obra" location="top">
               <template v-slot:activator="{ props }">
                 <v-icon 
                   class="dark:bg-slate-950 dark:text-white bg-slate-500 rounded-full ml-4 cursor-pointer p-[22px]" 
