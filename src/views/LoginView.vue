@@ -25,7 +25,7 @@
   </div>    
 </template>
   
-  <script>
+<script>
   import { defineComponent } from 'vue';
   import * as loginService from '../services/authService.js';
   
