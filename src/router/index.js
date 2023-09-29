@@ -41,7 +41,7 @@ const routes = [
     path: "/acervo",
     name: "TelaObras",
     component: TelaObras,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: false },
   }
 ];
 

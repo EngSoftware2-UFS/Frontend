@@ -105,7 +105,7 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-dialog v-model="updateDialog" width="50%" persistent>
+            <v-dialog v-model="updateDialog" width="50%" persistent max-height="80%">
               <v-card>
                 <v-card-title class="d-flex">
                   Editar obra
@@ -167,7 +167,7 @@
                   <div class="mt-1 ml-2"><span class="font-bold">Idioma:</span> {{ viewObra.idioma }}</div>
                   <div class="mt-1 ml-2"><span class="font-bold">Edição:</span> {{ viewObra.edicao }}</div>
                   <div class="mt-1 ml-2"><span class="font-bold">Isbn:</span> {{ viewObra.isbn }}</div>
-                  <div class="mt-1 ml-2"><span class="font-bold">Cadastrado por:</span> {{ viewObra.cadastrado?.nome }}</div>
+                  <div v-if="checkUserLogged" class="mt-1 ml-2"><span class="font-bold">Cadastrado por:</span> {{ viewObra.cadastrado?.nome }}</div>
                   <div class="mt-2"><span class="font-bold text-xl">Editora:</span></div>
                   <div class="mt-1 ml-2"><span class="font-bold">Nome:</span> {{ viewObra.editora?.nome }}</div>
                   <div class="mt-1 ml-2"><span class="font-bold">Nacionalidade:</span> {{ viewObra.editora?.nacionalidade }}</div>
@@ -250,6 +250,12 @@ import { defineComponent } from 'vue';
   },
   props: {
     userData: Object,
+  },
+  computed: {
+    checkUserLogged: function () {
+      console.log(this.userData);
+      return this.userData?.id;
+    }
   },
   methods: {
     refreshObras: async function () {
