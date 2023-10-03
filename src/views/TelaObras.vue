@@ -77,6 +77,7 @@
                 </v-card-title>
                 <v-card-text>
                   <v-text-field label="Título" :rules="[rules.required]" v-model="newObra.titulo" density="compact"/>
+                  <v-text-field label="Quantidade de Exemplares" type="number" :rules="[rules.required, rules.great1]" v-model="newObra.quantidadeExemplares" density="compact"/>
                   <v-text-field label="Ano" type="number" :rules="[rules.required]" v-model="newObra.ano" density="compact"/>
                   <v-text-field label="Idioma" :rules="[rules.required]" v-model="newObra.idioma" density="compact"/>
                   <v-text-field label="Gênero" :rules="[rules.required]" v-model="newObra.generoNome" density="compact"/>
@@ -200,9 +201,11 @@ import { defineComponent } from 'vue';
       return {
         rules: {
           required: value => !!value || 'Campo obrigatório.',
-          min: v => v.length >= 8 || 'Mínimo 8 caracteres.'
+          min: v => v.length >= 8 || 'Mínimo 8 caracteres.',
+          great1: v => parseInt(v) >= 1 || 'Quantidade mínima de 1 exemplar.'
         },
         defaultObra: {
+          quantidadeExemplares: null,
           titulo: null,
           idioma: null,
           ano: null,
@@ -223,6 +226,7 @@ import { defineComponent } from 'vue';
         loadingNome: false,
         createDialog: false,
         newObra: {
+          quantidadeExemplares: null,
           titulo: null,
           idioma: null,
           ano: null,
