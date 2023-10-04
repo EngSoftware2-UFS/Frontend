@@ -4,9 +4,9 @@
       <LogoView />
       <div class="d-flex flex-col justify-center align-middle">
         <div class="mx-auto w-6/12 mb-5 d-flex">
-          <div :class="['text-center border-[2px] w-6/12 py-4 text-2xl font-bold cursor-pointer hover:border-white dark:bg-slate-900', history == 'rs' ? 'border-white' : 'border-slate-900']"
+          <div :class="['text-center border-[2px] w-6/12 py-4 text-2xl font-bold cursor-pointer dark:hover:border-white dark:bg-slate-900 bg-slate-200 hover:border-black', history == 'rs' ? 'dark:border-white border-black' : 'dark:border-slate-900 border-slate-200']"
             @click="history = 'rs'; refreshData();">Reservas</div>
-          <div :class="['text-center border-[2px] w-6/12 py-4 text-2xl font-bold cursor-pointer hover:border-white dark:bg-slate-900', history == 'ep' ? 'border-white' : 'border-slate-900']"
+          <div :class="['text-center border-[2px] w-6/12 py-4 text-2xl font-bold cursor-pointer dark:hover:border-white dark:bg-slate-900 bg-slate-200 hover:border-black', history == 'ep' ? 'dark:border-white border-black' : 'dark:border-slate-900 border-slate-200']"
             @click="history = 'ep'; refreshDataEP();">Empréstimos</div>
         </div>
         <div v-if="history == 'rs'" class="mx-auto w-6/12">
