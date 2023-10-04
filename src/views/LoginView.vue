@@ -1,13 +1,13 @@
 <template>
   <div class="container m-auto p-10 h-full d-flex">
-    <v-card class="w-9/12 m-auto d-flex h-2/3 dark:!bg-slate-800 dark:text-white bg-slate-100" elevation="4">
+    <v-card class="w-9/12 m-auto d-flex dark:!bg-slate-800 dark:text-white bg-slate-100" elevation="4">
       <div class="fill" v-if="!$vuetify.display.mobile">
         <img :src="require('../assets/images/library.jpg')" />
       </div>
       <div class="d-flex m-auto flex-column">
         <v-img
           :src="require('../assets/book.png')"
-          class="my-3"
+          class="mb-3 mt-10"
           contain
           height="100"
         />
@@ -19,7 +19,7 @@
           <v-radio label="Atendente" value="1"></v-radio>
           <v-radio label="Bibliotecario" value="2"></v-radio>
         </v-radio-group>
-        <v-btn class="mx-auto dark:!text-black dark:!bg-white bg-black" variant="solo" @click="login()">Entrar</v-btn>
+        <v-btn class="mx-auto mb-10 dark:!text-black dark:!bg-white bg-black" variant="solo" @click="login()">Entrar</v-btn>
       </div>
     </v-card>
   </div>    
