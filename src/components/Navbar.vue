@@ -78,6 +78,27 @@ export default {
         icon: "mdi-account-multiple-plus",
         path: "/bibliotecarios",
         roles: ["bibliotecario"]
+      },
+      {
+        id: crypto.randomUUID(),
+        text: "Reservas",
+        icon: "mdi-book-open-page-variant",
+        path: "/reservas",
+        roles: ["atendente"]
+      },
+      {
+        id: crypto.randomUUID(),
+        text: "Emprestimos",
+        icon: "mdi-bookshelf",
+        path: "/emprestimos",
+        roles: ["atendente"]
+      },
+      {
+        id: crypto.randomUUID(),
+        text: "Histórico",
+        icon: "mdi-history",
+        path: "/historico",
+        roles: ["cliente"]
       }
     ],
   }),

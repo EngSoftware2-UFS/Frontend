@@ -5,6 +5,9 @@ import TelaClientes from "../views/TelaClientes.vue";
 import TelaAtendentes from "../views/TelaAtendentes.vue";
 import TelaBibliotecarios from "../views/TelaBibliotecarios.vue";
 import TelaObras from "../views/TelaObras.vue";
+import TelaEmprestimos from "../views/TelaEmprestimos.vue";
+import TelaReservas from "../views/TelaReservas.vue";
+import TelaHistorico from "../views/TelaHistorico.vue";
 
 const routes = [
   {
@@ -42,6 +45,24 @@ const routes = [
     name: "TelaObras",
     component: TelaObras,
     meta: { requiresAuth: false },
+  },
+  {
+    path: "/emprestimos",
+    name: "TelaEmprestimos",
+    component: TelaEmprestimos,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/reservas",
+    name: "TelaReservas",
+    component: TelaReservas,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/historico",
+    name: "TelaHistorico",
+    component: TelaHistorico,
+    meta: { requiresAuth: true },
   }
 ];
 

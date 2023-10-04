@@ -4,6 +4,25 @@
       <LogoView />
       <div class="d-flex flex-col justify-center">
         <div class="w-6/12 mx-auto">
+          <div v-if="reservar.length > 0" class="d-flex flex-col mb-5 align-center">
+            <div class="text-4xl font-bold text-center w-full mb-2">Lista de Reserva</div>
+            <table class="table-auto border-[2px] dark:border-gray-950 border-gray-500 w-full">
+              <thead class="dark:bg-gray-900 bg-gray-400 border-[2px] dark:border-gray-950 border-gray-500">
+                <tr>
+                  <th class="text-left px-4 py-2">Título</th>
+                </tr>
+              </thead>
+              <tbody class="dark:bg-gray-800 bg-slate-300 border-[2px] dark:border-gray-950 border-gray-500">
+                <tr v-for="robra in reservar" :key="robra.id" class="border-[2px] dark:border-gray-950 border-gray-500">
+                  <td class="px-4 py-2 text-left">{{ robra.titulo }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <v-btn class="mt-4 w-6/12 dark:bg-slate-300 dark:!text-black bg-slate-900 text-white" @click="concluirReserva()">
+              Concluir Reserva
+            </v-btn>
+          </div>
+
           <div class="d-flex">
             <v-text-field
               class="mb-4 mr-4 w-[20%]"
@@ -59,6 +78,11 @@
                   <td class="px-4 py-2 text-left">{{ obra.editora?.nome }}</td>
                   <td class="px-4 py-2 text-right min-w-[110px]">
                     <v-icon icon="mdi-eye" size="small" @click="showObra(obra)"></v-icon>
+                    <v-tooltip v-if="userData?.tipoUsuario == 'CLIENTE'" text="Adicionar à lista de reserva." location="top">
+                      <template v-slot:activator="{ props }">
+                        <v-icon v-bind="props" icon="mdi-book-plus-multiple" size="small" class="ml-2" @click="addObraToReserva(obra)"></v-icon>
+                      </template>
+                    </v-tooltip>
                     <v-icon v-if="userData?.tipoUsuario == 'BIBLIOTECARIO'" icon="mdi-update" size="small" class="ml-2" @click="showUpdateDialog(obra)"></v-icon>
                     <v-icon v-if="userData?.tipoUsuario == 'BIBLIOTECARIO'" icon="mdi-delete" size="small" class="ml-2" @click="deleteDialog=true; deleteObra = obra"></v-icon>
                   </td>
@@ -188,6 +212,7 @@
 
 <script>
 import * as obraService from "../services/obraService";
+import * as reservaService from "../services/reservaService";
 import * as bibliotecarioService from "../services/bibliotecarioService";
 import LogoView from "../components/Logo.vue";
 import { defineComponent } from 'vue';
@@ -249,7 +274,8 @@ import { defineComponent } from 'vue';
         viewDialog: false,
         currentAuthor: null,
         currentAuthorUpdt: null,
-        obras: []
+        obras: [],
+        reservar: []
     }
   },
   props: {
@@ -262,8 +288,26 @@ import { defineComponent } from 'vue';
     }
   },
   methods: {
+    addObraToReserva: function (obra) {
+      if (this.reservar.findIndex(x => x.id == obra.id) > -1)
+        this.$toast.error("Esta obra já foi adicionada na lista.");
+      else if (this.reservar.length < 3) {
+        this.reservar.push({ id: obra.id, titulo: obra.titulo });
+      }else this.$toast.error("Não é possível reservar mais de 3 obras de uma vez.");
+    },
+    concluirReserva: function () {
+      let obrasId = this.reservar.map(x => x.id);
+      reservaService.createReserva({ obrasId })
+      .then(() => {
+        this.reservar = [];
+        this.$toast.success("Obras reservadas.");
+      }).catch(() => {
+        this.reservar = [];
+      })
+    },
     refreshObras: async function () {
-      obraService.getObras(this.searchTitle, this.searchGender).then(res => {
+      obraService.getObras(this.searchTitle, this.searchGender)
+      .then(res => {
         this.obras = res;
       }).catch(() => {
         this.obras = [];
