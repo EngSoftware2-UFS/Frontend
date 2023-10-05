@@ -56,7 +56,7 @@
               <tbody class="dark:bg-gray-800 bg-slate-300 border-[2px] dark:border-gray-950 border-gray-500">
                 <tr v-for="cliente in clientes" :key="cliente.id" class="border-[2px] dark:border-gray-950 border-gray-500">
                   <td class="px-4 py-2 text-left">{{ cliente.nome }}</td>
-                  <td class="px-4 py-2 text-left">{{ cpf(cliente.cpf) }}</td>
+                  <td class="px-4 py-2 text-left">{{ cliente.cpf }}</td>
                   <td class="px-4 py-2 text-left">{{ cliente.email }}</td>
                   <td class="px-4 py-2 text-right min-w-[110px]">
                     <v-icon icon="mdi-eye" size="small" @click="showCliente(cliente)"></v-icon>
@@ -78,7 +78,7 @@
                 </v-card-title>
                 <v-card-text>
                   <v-text-field label="Nome" :rules="[rules.required]" v-model="newCliente.nome" density="compact"/>
-                  <v-text-field label="CPF" :rules="[rules.required]" v-model="newCliente.cpf" density="compact"/>
+                  <v-text-field label="CPF" :rules="[rules.required]" v-model="newCliente.cpf" density="compact" @keyup="maskcpf()"/>
                   <v-text-field label="E-mail" type="email" :rules="[rules.required]" v-model="newCliente.email" density="compact"/>
                   <v-text-field label="Senha" type="password" :rules="[rules.required, rules.min]" v-model="newCliente.senha" density="compact"/>
                   <v-text-field label="Cidade" :rules="[rules.required]" v-model="newCliente.endereco.cidade" density="compact"/>
@@ -101,7 +101,7 @@
                 </v-card-title>
                 <v-card-text>
                   <v-text-field label="Nome" :rules="[rules.required]" v-model="clientUpdating.nome" density="compact"/>
-                  <v-text-field label="CPF" :rules="[rules.required]" v-model="clientUpdating.cpf" density="compact"/>
+                  <v-text-field label="CPF" :rules="[rules.required]" v-model="clientUpdating.cpf" density="compact" @keyup="maskcpfupd()"/>
                   <v-text-field label="E-mail" type="email" :rules="[rules.required]" v-model="clientUpdating.email" density="compact"/>
                   <v-text-field label="Cidade" :rules="[rules.required]" v-model="clientUpdating.endereco.cidade" density="compact"/>
                   <v-text-field label="Bairro" :rules="[rules.required]" v-model="clientUpdating.endereco.bairro" density="compact"/>
@@ -134,7 +134,7 @@
                 <v-card-text class="px-10 py-5">
                   <div class="mt-2"><span class="font-bold text-xl">Cliente:</span></div>
                   <div class="mt-1 ml-2"><span class="font-bold">Nome:</span> {{ viewClient.nome }}</div>
-                  <div class="mt-1 ml-2"><span class="font-bold">CPF:</span> {{ cpf(viewClient.cpf) }}</div>
+                  <div class="mt-1 ml-2"><span class="font-bold">CPF:</span> {{ viewClient.cpf }}</div>
                   <div class="mt-1 ml-2"><span class="font-bold">E-mail:</span> {{ viewClient.email }}</div>
                   <div class="mt-1 ml-2"><span class="font-bold">Inadimplente:</span> {{ getInadimplencia }}</div>
                   <div class="mt-2"><span class="font-bold text-xl">Endereço:</span></div>
@@ -265,6 +265,36 @@ import moment from 'moment';
       v=v.replace(/(\d{3})(\d)/,"$1.$2")
       v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2")
       return v
+    },
+    maskcpf() {
+      var cpf = this.newCliente.cpf.split(/\/|\.|-/).join("");
+      if (!cpf.match(/^[0-9]*$/)) {
+        cpf = cpf.match(/\d/g) || []
+        cpf = cpf.join("")
+      }
+      var end = -1;
+      if (cpf.length >= 9 && cpf.length < 11) end = 3 + cpf.length;
+      if (cpf.length >= 6 && cpf.length < 9) end = 2 + cpf.length;
+      if (cpf.length >= 3 && cpf.length < 6) end = 1 + cpf.length;
+      if (cpf.length <= 2) end = cpf.length;
+      cpf = `${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6, 9)}-${cpf.substring(9, 11)}`;
+      if (end > -1) cpf = cpf.substring(0, end);
+      this.newCliente.cpf = cpf;
+    },
+    maskcpfupd() {
+      var cpf = this.clientUpdating.cpf.split(/\/|\.|-/).join("");
+      if (!cpf.match(/^[0-9]*$/)) {
+        cpf = cpf.match(/\d/g) || []
+        cpf = cpf.join("")
+      }
+      var end = -1;
+      if (cpf.length >= 9 && cpf.length < 11) end = 3 + cpf.length;
+      if (cpf.length >= 6 && cpf.length < 9) end = 2 + cpf.length;
+      if (cpf.length >= 3 && cpf.length < 6) end = 1 + cpf.length;
+      if (cpf.length <= 2) end = cpf.length;
+      cpf = `${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6, 9)}-${cpf.substring(9, 11)}`;
+      if (end > -1) cpf = cpf.substring(0, end);
+      this.clientUpdating.cpf = cpf;
     },
     addCliente: async function (data) {
       if (!data.nome || !data.cpf || !data.senha || !data.email || !data.endereco.cidade || !data.endereco.bairro)

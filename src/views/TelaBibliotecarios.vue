@@ -56,7 +56,7 @@
               <tbody class="dark:bg-gray-800 bg-slate-300 border-[2px] dark:border-gray-950 border-gray-500">
                 <tr v-for="bibliotecario in bibliotecarios" :key="bibliotecario.id" class="border-[2px] dark:border-gray-950 border-gray-500">
                   <td class="px-4 py-2 text-left">{{ bibliotecario.nome }}</td>
-                  <td class="px-4 py-2 text-left">{{ cpf(bibliotecario.cpf) }}</td>
+                  <td class="px-4 py-2 text-left">{{ bibliotecario.cpf }}</td>
                   <td class="px-4 py-2 text-left">{{ bibliotecario.email }}</td>
                   <td class="px-4 py-2 text-right min-w-[110px]">
                     <v-icon icon="mdi-eye" size="small" @click="showBibliotecario(bibliotecario)"></v-icon>
@@ -78,7 +78,7 @@
                 </v-card-title>
                 <v-card-text>
                   <v-text-field label="Nome" :rules="[rules.required]" v-model="newBibliotecario.nome" density="compact"/>
-                  <v-text-field label="CPF" :rules="[rules.required]" v-model="newBibliotecario.cpf" density="compact"/>
+                  <v-text-field label="CPF" :rules="[rules.required]" v-model="newBibliotecario.cpf" density="compact" @keyup="maskcpf()"/>
                   <v-text-field label="E-mail" type="email" :rules="[rules.required]" v-model="newBibliotecario.email" density="compact"/>
                   <v-text-field label="Senha" type="password" :rules="[rules.required, rules.min]" v-model="newBibliotecario.senha" density="compact"/>
                 </v-card-text>
@@ -96,7 +96,7 @@
                 </v-card-title>
                 <v-card-text>
                   <v-text-field label="Nome" :rules="[rules.required]" v-model="bibliotecarioUpdating.nome" density="compact"/>
-                  <v-text-field label="CPF" :rules="[rules.required]" v-model="bibliotecarioUpdating.cpf" density="compact"/>
+                  <v-text-field label="CPF" :rules="[rules.required]" v-model="bibliotecarioUpdating.cpf" density="compact" @keyup="maskcpfupd()"/>
                   <v-text-field label="E-mail" type="email" :rules="[rules.required]" v-model="bibliotecarioUpdating.email" density="compact"/>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-end">
@@ -124,7 +124,7 @@
                 <v-card-text class="px-10 py-5">
                   <div class="mt-2"><span class="font-bold text-xl">Bibliotecario:</span></div>
                   <div class="mt-1 ml-2"><span class="font-bold">Nome:</span> {{ viewBibliotecario.nome }}</div>
-                  <div class="mt-1 ml-2"><span class="font-bold">CPF:</span> {{ cpf(viewBibliotecario.cpf) }}</div>
+                  <div class="mt-1 ml-2"><span class="font-bold">CPF:</span> {{ viewBibliotecario.cpf }}</div>
                   <div class="mt-1 ml-2"><span class="font-bold">E-mail:</span> {{ viewBibliotecario.email }}</div>
                 </v-card-text>
               </v-card>
@@ -200,6 +200,36 @@ import { defineComponent } from 'vue';
       v=v.replace(/(\d{3})(\d)/,"$1.$2")
       v=v.replace(/(\d{3})(\d{1,2})$/,"$1-$2")
       return v
+    },
+    maskcpf() {
+      var cpf = this.newBibliotecario.cpf.split(/\/|\.|-/).join("");
+      if (!cpf.match(/^[0-9]*$/)) {
+        cpf = cpf.match(/\d/g) || []
+        cpf = cpf.join("")
+      }
+      var end = -1;
+      if (cpf.length >= 9 && cpf.length < 11) end = 3 + cpf.length;
+      if (cpf.length >= 6 && cpf.length < 9) end = 2 + cpf.length;
+      if (cpf.length >= 3 && cpf.length < 6) end = 1 + cpf.length;
+      if (cpf.length <= 2) end = cpf.length;
+      cpf = `${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6, 9)}-${cpf.substring(9, 11)}`;
+      if (end > -1) cpf = cpf.substring(0, end);
+      this.newBibliotecario.cpf = cpf;
+    },
+    maskcpfupd() {
+      var cpf = this.bibliotecarioUpdating.cpf.split(/\/|\.|-/).join("");
+      if (!cpf.match(/^[0-9]*$/)) {
+        cpf = cpf.match(/\d/g) || []
+        cpf = cpf.join("")
+      }
+      var end = -1;
+      if (cpf.length >= 9 && cpf.length < 11) end = 3 + cpf.length;
+      if (cpf.length >= 6 && cpf.length < 9) end = 2 + cpf.length;
+      if (cpf.length >= 3 && cpf.length < 6) end = 1 + cpf.length;
+      if (cpf.length <= 2) end = cpf.length;
+      cpf = `${cpf.substring(0, 3)}.${cpf.substring(3, 6)}.${cpf.substring(6, 9)}-${cpf.substring(9, 11)}`;
+      if (end > -1) cpf = cpf.substring(0, end);
+      this.bibliotecarioUpdating.cpf = cpf;
     },
     addBibliotecario: async function (data) {
       if (!data.nome || !data.cpf || !data.senha || !data.email)

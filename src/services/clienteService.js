@@ -103,4 +103,15 @@ const getHistoricoEmprestimo = async (id) => {
     })
 }
 
-export { getHistoricoReserva, getHistoricoEmprestimo, getCliente, getClientes, createCliente, updateCliente, deleteCliente, getReservas, getEmprestimos  }
+const devolucoesPendentes = async () => {
+  setHeader();
+    return api.get(`/clientes/devolucoesPendentes`)
+    .then(res => {
+        return res.data;
+    })
+    .catch(err => {
+        throw err;
+    })
+}
+
+export { getHistoricoReserva, getHistoricoEmprestimo, getCliente, getClientes, createCliente, updateCliente, deleteCliente, getReservas, getEmprestimos, devolucoesPendentes  }

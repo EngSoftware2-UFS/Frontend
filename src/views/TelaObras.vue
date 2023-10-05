@@ -23,26 +23,21 @@
             </v-btn>
           </div>
 
-          <div class="d-flex">
+          <div class="d-flex flex-col items-center">
+            <span class="text-center text-2xl font-bold">Pesquisar por</span>
+            <v-radio-group inline v-model="searchFor">
+              <v-radio class="mr-6" label="Título" value="titulo"></v-radio>
+              <v-radio class="mr-6" label="ISBN" value="isbn"></v-radio>
+              <v-radio class="mr-6" label="Autor" value="autor"></v-radio>
+              <v-radio label="Gênero" value="genero"></v-radio>
+            </v-radio-group>
             <v-text-field
-              class="mb-4 mr-4 w-[20%]"
-              :loading="loadingNome"
-              v-model="searchTitle"
+              class="mb-4 w-full"
+              :loading="loading"
+              v-model="search"
               density="compact"
               variant="solo"
-              label="filtrar titulo"
-              append-inner-icon="mdi-magnify"
-              single-line
-              hide-details
-              @keyup="refreshObras()"
-            ></v-text-field>
-            <v-text-field
-              class="mb-4"
-              :loading="loadingCpf"
-              v-model="searchGender"
-              density="compact"
-              variant="solo"
-              label="pesquisar por genero"
+              :label="`filtrar por ${searchFor}`"
               append-inner-icon="mdi-magnify"
               single-line
               hide-details
@@ -245,10 +240,9 @@ import { defineComponent } from 'vue';
           bibliotecarioId: null,
           autors: []
         },
-        searchTitle: null,
-        searchGender: null,
-        loadingCpf: false,
-        loadingNome: false,
+        search: null,
+        searchFor: "titulo",
+        loading: false,
         createDialog: false,
         newObra: {
           quantidadeExemplares: null,
@@ -306,7 +300,7 @@ import { defineComponent } from 'vue';
       })
     },
     refreshObras: async function () {
-      obraService.getObras(this.searchTitle, this.searchGender)
+      obraService.getObras(this.searchFor, this.search)
       .then(res => {
         this.obras = res;
       }).catch(() => {

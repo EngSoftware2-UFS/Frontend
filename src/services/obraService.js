@@ -18,11 +18,18 @@ const getObra = async (id) => {
     });
 };
 
-const getObras = (title = null, gender = null) => {
+const getObras = (searchFor = null, search = null) => {
   setHeader();
   var queries = [];
-  if (title != null) queries.push(`title=${title}`);
-  if (gender != null) queries.push(`genero=${gender}`);
+  if (searchFor === 'titulo') {
+    if (search != null) queries.push(`title=${search}`);
+  } else if (searchFor === 'isbn') {
+    if (search != null) queries.push(`isbn=${search}`);
+  } else if (searchFor === 'autor') {
+    if (search != null) queries.push(`autor=${search}`)
+  } else if (searchFor === 'genero') {
+    if (search != null) queries.push(`genero=${search}`);
+  }
   var query = `?${queries.join("&")}`;
 
   return api
