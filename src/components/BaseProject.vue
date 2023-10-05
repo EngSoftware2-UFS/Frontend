@@ -12,7 +12,7 @@
 
       <v-col class="mb-8">
         <h1 class="font-extrabold text-2xl mb-3">
-          Sistema de biblioteca
+          Biblioteca ESUFS
         </h1>
       </v-col>
 

@@ -38,7 +38,7 @@
   }
   .adjustpos {
     position: absolute;
-    z-index: 999;
+    z-index: 9999;
     background-color: #0000006f;
   }
   .bookld {

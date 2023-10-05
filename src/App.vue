@@ -2,92 +2,116 @@
   <v-app class="dark:bg-slate-700 dark:text-white">
     <Loading v-if="loading" />
     <v-main class="d-flex flex-col">
-      <Navbar @toggle="toggle" @logout="logout" :userLogged="userLogged" :userData="user" />
+      <Navbar
+        @toggle="toggle"
+        @logout="logout"
+        :userLogged="userLogged"
+        :userData="user"
+      />
       <router-view @logged="logged" :userData="user" />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Navbar from './components/Navbar.vue';
-import Loading from './components/Loading.vue';
-import * as loginService from './services/authService';
+import Navbar from "./components/Navbar.vue";
+import Loading from "./components/Loading.vue";
+import * as loginService from "./services/authService";
+import { useDark } from "@vueuse/core";
+import { useTheme } from 'vuetify'
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Navbar,
-    Loading
+    Loading,
   },
   data: () => ({
     loading: false,
     userLogged: false,
     requests: [],
-    user: {}
+    user: {},
   }),
   methods: {
     mountInterceptors: function () {
-      this.$api.getApi().interceptors.request.use(config => {
-        this.requests.push(1);
-        this.loading = true;
-        return config;
-      }, error => {
-        return error;
-      });
+      this.$api.getApi().interceptors.request.use(
+        (config) => {
+          this.requests.push(1);
+          this.loading = true;
+          return config;
+        },
+        (error) => {
+          return error;
+        }
+      );
 
-      this.$api.getApi().interceptors.response.use(config => {
-        if (this.requests.length > 1) {
-          this.requests.pop();
-        }
-        else {
-          this.requests.pop();
-          this.loading = false;
-        }
-        return config;
-      }, error => {
-        if (this.requests.length > 1) {
-          this.requests.pop();
-        }
-        else {
-          this.requests.pop();
-          this.loading = false;
-        }
-        
-        if (error.response?.status == 401 && this.$route.path != '/login')
-        {
-          if (localStorage.token) {
-            loginService.logout();
-            this.logout();
-            this.$toast.info("Sessão inválida, usuário deslogado.");
+      this.$api.getApi().interceptors.response.use(
+        (config) => {
+          if (this.requests.length > 1) {
+            this.requests.pop();
+          } else {
+            this.requests.pop();
+            this.loading = false;
           }
-        }
-        else {
-          var errors = error.response?.data?.errors;
-          if (errors) {
-            var errorMessage = errors.join("\n");
-            this.$toast.error(errorMessage);
+          return config;
+        },
+        (error) => {
+          if (this.requests.length > 1) {
+            this.requests.pop();
+          } else {
+            this.requests.pop();
+            this.loading = false;
           }
-          else {
-            this.$toast.error("Um erro ocorreu.");
+          
+          if (error.response?.status == 403) {
+            this.$toast.error("Sem permissão.");
+          }else {
+            if (error.response?.status == 401 && this.$route.path != "/login") {
+              if (localStorage.token) {
+                loginService.logout();
+                this.logout();
+                this.$toast.info("Sessão inválida, usuário deslogado.");
+              }
+            } else {
+              var errors = error.response?.data?.errors;
+              if (errors) {
+                var errorMessage = "";
+                if (errors.length && errors.length > 0)
+                  errorMessage = errors.join("\n");
+                else {
+                  for (var err in errors) {
+                    errorMessage += errors[err][0] + "\n";
+                  }
+                }
+                this.$toast.error(errorMessage);
+              } else {
+                this.$toast.error("Um erro ocorreu.");
+              }
+            }
           }
+          throw error;
         }
-        throw error;
-      })
+      );
     },
     logged: function () {
-        if (localStorage.token && !this.userLogged) {
-            this.userLogged = true;
-            this.user = JSON.parse(localStorage.user);
-        }
+      if (localStorage.token && !this.userLogged) {
+        this.userLogged = true;
+        this.user = JSON.parse(localStorage.user);
+      }
     },
     logout: function () {
       this.userLogged = false;
       this.user = {};
-    }
+      this.$router.push("/");
+    },
   },
   mounted() {
     this.mountInterceptors();
     this.logged();
-  }
-}
+    
+    const theme = useTheme()
+    var isDark = useDark();
+    theme.global.name.value = !isDark.value ? 'light' : 'dark'
+  },
+};
 </script>
