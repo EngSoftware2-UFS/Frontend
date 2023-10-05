@@ -52,12 +52,12 @@
                     <v-icon icon="mdi-eye" size="small" @click="showReserva(reserva)"></v-icon>
                     <v-tooltip v-if="userData?.tipoUsuario == 'ATENDENTE'" text="Realizar Empréstimo" location="top">
                       <template v-slot:activator="{ props }">
-                        <v-icon v-bind="props" icon="mdi-autorenew" size="small" class="ml-2" @click="startAction(reserva, 'Realizar o empréstimo desta reserva?', 'emprestar')"></v-icon>
+                        <v-icon v-bind="props" icon="mdi-book-plus" size="small" class="ml-2" @click="startAction(reserva, 'Realizar o empréstimo desta reserva?', 'emprestar')"></v-icon>
                       </template>
                     </v-tooltip>
                     <v-tooltip v-if="userData?.tipoUsuario == 'ATENDENTE'" text="Cancelar Reserva" location="top">
                       <template v-slot:activator="{ props }">
-                        <v-icon v-bind="props" icon="mdi-book-arrow-up" size="small" class="ml-2" @click="startAction(reserva, 'Cancelar reserva?', 'cancelar')"></v-icon>
+                        <v-icon v-bind="props" icon="mdi-cancel" size="small" class="ml-2" @click="startAction(reserva, 'Cancelar reserva?', 'cancelar')"></v-icon>
                       </template>
                     </v-tooltip>
                   </td>

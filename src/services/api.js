@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 var api = axios.create({
-    baseURL: 'https://es2api.projetosufs.cloud/'
+    // baseURL: 'https://es2api.projetosufs.cloud/'
+    baseURL: 'https://localhost:7014/'
 });
 
 

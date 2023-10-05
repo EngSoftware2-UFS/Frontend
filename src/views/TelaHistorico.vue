@@ -116,7 +116,12 @@
                   <td class="px-4 py-2 text-left">{{ emprestimo.status }}</td>
                   <td :class="['px-4 py-2 text-left font-bold', emprestimo.multa ? 'text-[#ff2222]' : '']">R$ {{ emprestimo.multa ? emprestimo.multa?.toLocaleString('en-us', { minimumIntegerDigits: 2 }) : '00' }},00</td>
                   <td class="px-4 py-2 text-right">
-                    <v-icon icon="mdi-eye" size="small" @click="showEmprestimo(emprestimo)"></v-icon>
+                    <v-tooltip v-if="userData?.tipoUsuario == 'CLIENTE' && emprestimo.status == 'ATIVO'" text="Renovar" location="top">
+                      <template v-slot:activator="{ props }">
+                        <v-icon v-bind="props" icon="mdi-autorenew" size="small" @click="startActionEP(emprestimo)"></v-icon>
+                      </template>
+                    </v-tooltip>
+                    <v-icon icon="mdi-eye ml-2" size="small" @click="showEmprestimo(emprestimo)"></v-icon>
                   </td>
                 </tr>
               </tbody>
@@ -124,6 +129,17 @@
             <div v-if="emprestimos.length == 0" class="px-4 py-2 d-flex justify-center text-center dark:bg-gray-800 bg-slate-300 border-[2px] dark:border-gray-950 border-gray-500">
               Nenhum resultado encontrado
             </div>
+            <v-dialog v-model="confirmDialogEP" width="auto" persistent>
+              <v-card>
+                <v-card-title class="d-flex mb-6 justify-center font-extrabold">
+                    <h1>Renovar Empréstimo?</h1>
+                </v-card-title>
+                <v-card-actions class="d-flex justify-center">
+                  <v-btn @click="renovarEmprestimo()" class="bg-green-700 text-white">Confirmar</v-btn>
+                  <v-btn @click="cleanDialogEP()" class="bg-red-700 text-white">Cancelar</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
             <v-dialog v-model="viewDialogEP" width="auto" max-height="70%" persistent>
               <v-card>
                 <v-card-title class="d-flex">
@@ -155,6 +171,7 @@
 
 <script>
 import * as reservaService from "../services/reservaService";
+import * as emprestimoService from "../services/emprestimoService";
 import * as clienteService from "../services/clienteService";
 import LogoView from "../components/Logo.vue";
 import { defineComponent } from 'vue';
@@ -205,6 +222,8 @@ import moment from 'moment';
         searchStatus: null,
         searchStatusEP: null,
         loadingStatus: false,
+        confirmDialogEP: false,
+        confirmDataEP: null,
         viewEmprestimo: null,
         viewDialogEP: false,
         confirmDialog: false,
@@ -260,9 +279,17 @@ import moment from 'moment';
       this.confirmData = reserva;
       this.confirmDialog = true;
     },
+    startActionEP: function (emprestimo) {
+      this.confirmDataEP = emprestimo;
+      this.confirmDialogEP = true;
+    },
     cleanDialog: function () {
       this.confirmData = null;
       this.confirmDialog = false;
+    },
+    cleanDialogEP: function () {
+      this.confirmDataEP = null;
+      this.confirmDialogEP = false;
     },
     cancelarReserva: async function () {
       reservaService.cancelar(this.confirmData.id)
@@ -274,6 +301,16 @@ import moment from 'moment';
       .catch(_ => {});
       this.cleanDialog();
     },
+    renovarEmprestimo: async function () {
+      emprestimoService.renovar(this.confirmDataEP.id)
+      .then(() => {
+        this.$toast.success("Empréstimo renovado.");
+        this.refreshDataEP();
+      })
+      /* eslint-disable-next-line */
+      .catch(_ => {});
+      this.cleanDialogEP();
+    }
   },
   mounted() {
     this.refreshData();
