@@ -19,7 +19,7 @@
           <v-radio label="Atendente" value="1"></v-radio>
           <v-radio label="Bibliotecario" value="2"></v-radio>
         </v-radio-group>
-        <v-btn class="mx-auto mb-10 dark:!text-black dark:!bg-white bg-black" variant="solo" @click="login()">Entrar</v-btn>
+        <v-btn class="mx-auto mb-10 !bg-[#ce1b2bee] text-white" variant="elevated" @click="login()">Entrar</v-btn>
       </div>
     </v-card>
   </div>    
