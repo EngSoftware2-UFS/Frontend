@@ -31,29 +31,31 @@
               <v-radio class="mr-6" label="Autor" value="autor"></v-radio>
               <v-radio label="Gênero" value="genero"></v-radio>
             </v-radio-group>
-            <v-text-field
-              class="mb-4 w-full"
-              :loading="loading"
-              v-model="search"
-              density="compact"
-              variant="solo"
-              :label="`filtrar por ${searchFor}`"
-              append-inner-icon="mdi-magnify"
-              single-line
-              hide-details
-              @click:append-inner="refreshObras()"
-              @keyup.enter="refreshObras()"
-            ></v-text-field>
-            <v-tooltip v-if="userData?.tipoUsuario == 'BIBLIOTECARIO'" text="Cadastrar Obra" location="top">
-              <template v-slot:activator="{ props }">
-                <v-icon 
-                  class="dark:bg-slate-950 dark:text-white bg-slate-500 rounded-full ml-4 cursor-pointer p-[22px]" 
-                  size="large"
-                  icon="mdi-plus"
-                  v-bind="props"
-                  @click="createDialog = true" />
-              </template>
-            </v-tooltip>
+            <div class="d-flex w-full">
+              <v-text-field
+                class="mb-4 w-full"
+                :loading="loading"
+                v-model="search"
+                density="compact"
+                variant="solo"
+                :label="`filtrar por ${searchFor}`"
+                append-inner-icon="mdi-magnify"
+                single-line
+                hide-details
+                @click:append-inner="refreshObras()"
+                @keyup.enter="refreshObras()"
+              ></v-text-field>
+              <v-tooltip v-if="userData?.tipoUsuario == 'BIBLIOTECARIO'" text="Cadastrar Obra" location="top">
+                <template v-slot:activator="{ props }">
+                  <v-icon 
+                    class="dark:bg-slate-950 dark:text-white bg-slate-500 rounded-full ml-4 cursor-pointer p-[22px]" 
+                    size="large"
+                    icon="mdi-plus"
+                    v-bind="props"
+                    @click="createDialog = true" />
+                </template>
+              </v-tooltip>
+            </div>
           </div>
 
           <div>
