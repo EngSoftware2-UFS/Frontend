@@ -18,7 +18,7 @@
                 </tr>
               </tbody>
             </table>
-            <v-btn class="mt-4 w-6/12 dark:bg-slate-300 dark:!text-black bg-slate-900 text-white" @click="concluirReserva()">
+            <v-btn class="w-1/2 mt-4 !bg-[#ce1b2bee] text-white" @click="concluirReserva()">
               Concluir Reserva
             </v-btn>
           </div>
