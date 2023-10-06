@@ -82,8 +82,8 @@
                   <v-text-field label="E-mail" type="email" :rules="[rules.required]" v-model="newAtendente.email" density="compact"/>
                   <v-text-field label="Senha" type="password" :rules="[rules.required, rules.min]" v-model="newAtendente.senha" density="compact"/>
                 </v-card-text>
-                <v-card-actions class="d-flex justify-end">
-                  <v-btn @click="addAtendente(newAtendente)" class="dark:bg-slate-900 dark:text-white bg-indigo-300">Adicionar</v-btn>
+                <v-card-actions class="d-flex justify-center">
+                  <v-btn @click="addAtendente(newAtendente)" class="w-1/2 mb-2 !bg-[#ce1b2bee] text-white">Adicionar</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -99,8 +99,8 @@
                   <v-text-field label="CPF" :rules="[rules.required]" v-model="atendenteUpdating.cpf" density="compact" @keyup="maskcpfupd()"/>
                   <v-text-field label="E-mail" type="email" :rules="[rules.required]" v-model="atendenteUpdating.email" density="compact"/>
                 </v-card-text>
-                <v-card-actions class="d-flex justify-end">
-                  <v-btn @click="updateAtendente(atendenteUpdating)" class="dark:bg-gray-900 dark:text-white bg-indigo-300 px-4">Salvar</v-btn>
+                <v-card-actions class="d-flex justify-center">
+                  <v-btn @click="updateAtendente(atendenteUpdating)" class="w-1/2 mb-2 !bg-[#ce1b2bee] text-white">Salvar</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -115,9 +115,10 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-dialog v-model="viewDialog" width="auto" max-height="70%" persistent>
+            <v-dialog v-model="viewDialog" width="auto" max-height="70%" min-width="30%" persistent>
               <v-card>
                 <v-card-title class="d-flex">
+                  {{ viewAtendente.nome }}
                   <v-spacer></v-spacer>
                   <v-icon icon="mdi-close" @click="viewDialog = false; viewAtendente = defaultAtendente;"></v-icon>
                 </v-card-title>

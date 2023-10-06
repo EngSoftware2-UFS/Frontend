@@ -111,19 +111,18 @@
                       append-inner-icon="mdi-delete"
                       :model-value="autor"
                       density="compact"
-                      @click:append-inner="removeAuthor(autor)"
-                      @keyup.enter="removeAuthor(autor)"/>
+                      @click:append-inner="removeAuthor(autor)"/>
                   </div>
                   <v-text-field label="Autor" 
-                    :rules="[rules.required]"
+                    :rules="[requiredAuthor]"
                     v-model="currentAuthor"
                     append-inner-icon="mdi-plus"
                     density="compact"
                     @click:append-inner="addAuthor()"
                     @keyup.enter="addAuthor()"/>
                 </v-card-text>
-                <v-card-actions class="d-flex justify-end">
-                  <v-btn @click="addObra(newObra)" class="dark:bg-slate-900 dark:text-white bg-indigo-300">Adicionar</v-btn>
+                <v-card-actions class="d-flex justify-center">
+                  <v-btn @click="addObra(newObra)" class="w-1/2 mb-2 !bg-[#ce1b2bee] text-white">Adicionar</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -148,19 +147,18 @@
                       append-inner-icon="mdi-delete"
                       :model-value="autor"
                       density="compact"
-                      @click:append-inner="removeAuthor(autor)"
-                      @keyup.enter="removeAuthor(autor)"/>
+                      @click:append-inner="removeAuthorUpdt(autor)"/>
                   </div>
                   <v-text-field label="Autor" 
-                    :rules="[rules.required]"
+                    :rules="[requiredAuthorUdpt]"
                     v-model="currentAuthorUpdt"
                     append-inner-icon="mdi-plus"
                     density="compact"
                     @click:append-inner="addAuthorUpdt()"
                     @keyup.enter="addAuthorUpdt()"/>
                 </v-card-text>
-                <v-card-actions class="d-flex justify-end">
-                  <v-btn @click="updateObra(obraUpdating)" class="dark:bg-gray-900 dark:text-white bg-indigo-300 px-4">Salvar</v-btn>
+                <v-card-actions class="d-flex justify-center">
+                  <v-btn @click="updateObra(obraUpdating)" class="w-1/2 mb-2 !bg-[#ce1b2bee] text-white">Salvar</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -175,9 +173,10 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-dialog v-model="viewDialog" width="auto" max-height="70%" persistent>
+            <v-dialog v-model="viewDialog" width="auto" max-height="70%" min-width="30%" persistent>
               <v-card>
                 <v-card-title class="d-flex">
+                  {{ viewObra.titulo }}
                   <v-spacer></v-spacer>
                   <v-icon icon="mdi-close" @click="viewDialog = false; viewObra = defaultObra;"></v-icon>
                 </v-card-title>
@@ -281,6 +280,12 @@ import { defineComponent } from 'vue';
     checkUserLogged: function () {
       console.log(this.userData);
       return this.userData?.id;
+    },
+    requiredAuthor: function () {
+      return this.newObra?.autores?.length != 0 || (!!this.currentAuthor || 'Adicione pelo menos 1 autor.');
+    },
+    requiredAuthorUdpt: function () {
+      return this.obraUpdating?.autores?.length != 0 || (!!this.currentAuthorUpdt || 'Adicione pelo menos 1 autor.');
     }
   },
   methods: {
@@ -380,6 +385,14 @@ import { defineComponent } from 'vue';
         var index = this.newObra?.autores.findIndex(x => x == autor);
         if (index > -1)
           this.newObra?.autores.splice(index, 1);
+      }
+    },
+    removeAuthorUpdt: function (autor) {
+      console.log(this.obraUpdating);
+      if (autor) {
+        var index = this.obraUpdating?.autores.findIndex(x => x == autor);
+        if (index > -1)
+          this.obraUpdating?.autores.splice(index, 1);
       }
     }
   },

@@ -18,7 +18,7 @@
       </v-col>
       <v-col cols="5" class="mt-auto flex flex-col pr-0">
         <div v-for="item in items" :key="item.id" class="w-full">
-            <v-btn v-if="showItem(item.roles)" class="w-full mb-2 !bg-[#ce1b2bee]"
+            <v-btn v-if="showItem(item.roles)" class="w-full mb-2 !bg-[#ce1b2bee] text-white"
               variant="elevated"
               :prepend-icon="item.icon"
               :append-icon="item.icon"

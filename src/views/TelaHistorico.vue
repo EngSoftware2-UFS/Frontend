@@ -63,9 +63,10 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-dialog v-model="viewDialog" width="auto" max-height="70%" persistent>
+            <v-dialog v-model="viewDialog" width="auto" max-height="70%" min-width="30%" persistent>
               <v-card>
                 <v-card-title class="d-flex">
+                  {{ viewReserva.status }}
                   <v-spacer></v-spacer>
                   <v-icon icon="mdi-close" @click="viewDialog = false; viewReserva = defaultReserva;"></v-icon>
                 </v-card-title>
@@ -140,9 +141,10 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-dialog v-model="viewDialogEP" width="auto" max-height="70%" persistent>
+            <v-dialog v-model="viewDialogEP" width="auto" max-height="70%" min-width="30%" persistent>
               <v-card>
                 <v-card-title class="d-flex">
+                  {{ viewEmprestimo.status }}
                   <v-spacer></v-spacer>
                   <v-icon icon="mdi-close" @click="viewDialogEP = false; viewEmprestimo = defaultEmprestimo;"></v-icon>
                 </v-card-title>
@@ -154,6 +156,7 @@
                   <div class="mt-1 ml-2"><span class="font-bold">Devolução:</span> {{ formatDate(viewEmprestimo.dataDevolucao) }}</div>
                   <div class="mt-1 ml-2"><span class="font-bold">Renovações disponíveis:</span> {{ viewEmprestimo.quantidadeRenovacao?.toLocaleString("en-us", { minimumIntegerDigits: 2 }) }}</div>
                   <div class="mt-1 ml-2"><span class="font-bold">Inadimplente:</span> {{ viewEmprestimo.inadimplencia ? "Sim" : "Não" }}</div>
+                  <div v-if="viewEmprestimo.inadimplencia" :class="['px-4 py-2 text-left font-bold', viewEmprestimo.multa ? 'text-[#ff2222]' : '']">R$ {{ vireEmprestimo.multa ? viewEmprestimo.multa?.toLocaleString('en-us', { minimumIntegerDigits: 2 }) : '00' }},00</div>
                   <div class="mt-1 ml-2"><span class="font-bold">Status:</span> {{ viewEmprestimo.status }}</div>
                   <div class="mt-2"><span class="font-bold text-xl">Obras:</span></div>
                   <div v-for="obra in viewEmprestimo.obras" :key="obra.id">
@@ -245,7 +248,8 @@ import moment from 'moment';
   },
   methods: {
     formatDate: function (date) {
-      return moment(date).format("DD/MM/YYYY");
+      if (!date) return "--";
+      return moment(date).format("DD/MM/YYYY HH:mm");
     },
     refreshData: async function () {
       clienteService.getHistoricoReserva(this.userData?.id).then(res => {
