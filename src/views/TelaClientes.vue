@@ -87,8 +87,8 @@
                   <v-text-field label="Número" v-model="newCliente.endereco.numero" density="compact"/>
                   <v-text-field label="Complemento" v-model="newCliente.endereco.complemento" density="compact"/>
                 </v-card-text>
-                <v-card-actions class="d-flex justify-end">
-                  <v-btn @click="addCliente(newCliente)" class="dark:bg-slate-900 dark:text-white bg-indigo-300">Adicionar</v-btn>
+                <v-card-actions class="d-flex justify-center">
+                  <v-btn @click="addCliente(newCliente)" class="w-1/2 mb-2 !bg-[#ce1b2bee] text-white">Adicionar</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -109,8 +109,8 @@
                   <v-text-field label="Número" v-model="clientUpdating.endereco.numero" density="compact"/>
                   <v-text-field label="Complemento" v-model="clientUpdating.endereco.complemento" density="compact"/>
                 </v-card-text>
-                <v-card-actions class="d-flex justify-end">
-                  <v-btn @click="updateCliente(clientUpdating)" class="dark:bg-gray-900 dark:text-white bg-indigo-300 px-4">Salvar</v-btn>
+                <v-card-actions class="d-flex justify-center">
+                  <v-btn @click="updateCliente(clientUpdating)" class="w-1/2 mb-2 !bg-[#ce1b2bee] text-white">Salvar</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -125,9 +125,10 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-dialog v-model="viewDialog" width="auto" max-height="70%" persistent>
+            <v-dialog v-model="viewDialog" width="auto" max-height="70%" min-width="30%" persistent>
               <v-card>
                 <v-card-title class="d-flex">
+                  {{ viewClient.nome }}
                   <v-spacer></v-spacer>
                   <v-icon icon="mdi-close" @click="viewDialog = false; viewClient = defaultClient; reservas = {obras: {}}; emprestimos = {obras: {}}"></v-icon>
                 </v-card-title>

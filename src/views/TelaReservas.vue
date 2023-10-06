@@ -78,7 +78,7 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <v-dialog v-model="viewDialog" width="auto" max-height="70%" persistent>
+            <v-dialog v-model="viewDialog" width="auto" max-height="70%" min-width="30%" persistent>
               <v-card>
                 <v-card-title class="d-flex">
                   <v-spacer></v-spacer>
@@ -160,7 +160,8 @@ import moment from 'moment';
   },
   methods: {
     formatDate: function (date) {
-      return moment(date).format("DD/MM/YYYY");
+      if (!date) return "--";
+      return moment(date).format("DD/MM/YYYY HH:mm");
     },
     refreshData: async function () {
       reservaService.getReservas(this.searchName, this.searchStatus).then(res => {
