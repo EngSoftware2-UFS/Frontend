@@ -156,7 +156,9 @@
                   <div class="mt-1 ml-2"><span class="font-bold">Devolução:</span> {{ formatDate(viewEmprestimo.dataDevolucao) }}</div>
                   <div class="mt-1 ml-2"><span class="font-bold">Renovações disponíveis:</span> {{ viewEmprestimo.quantidadeRenovacao?.toLocaleString("en-us", { minimumIntegerDigits: 2 }) }}</div>
                   <div class="mt-1 ml-2"><span class="font-bold">Inadimplente:</span> {{ viewEmprestimo.inadimplencia ? "Sim" : "Não" }}</div>
-                  <div v-if="viewEmprestimo.inadimplencia" :class="['px-4 py-2 text-left font-bold', viewEmprestimo.multa ? 'text-[#ff2222]' : '']">R$ {{ vireEmprestimo.multa ? viewEmprestimo.multa?.toLocaleString('en-us', { minimumIntegerDigits: 2 }) : '00' }},00</div>
+                  <div v-if="viewEmprestimo.inadimplencia" :class="['mt-1 ml-2 font-bold', viewEmprestimo.multa ? 'text-[#ff2222]' : '']">
+                    <span class="font-bold text-white">Multa:</span> R$ {{ viewEmprestimo.multa ? viewEmprestimo.multa?.toLocaleString('en-us', { minimumIntegerDigits: 2 }) : '00' }},00
+                  </div>
                   <div class="mt-1 ml-2"><span class="font-bold">Status:</span> {{ viewEmprestimo.status }}</div>
                   <div class="mt-2"><span class="font-bold text-xl">Obras:</span></div>
                   <div v-for="obra in viewEmprestimo.obras" :key="obra.id">
